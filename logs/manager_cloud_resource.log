@@ -1,0 +1,24 @@
+2018-05-27 23:02:14  get project cn-north-1 token Successf.
+2018-05-27 23:02:15  ECS_name:Windows云主机无法访问外网_技术服务部  id:75b31126-0d03-4109-a4ee-d36ad6bc24f2 Will be DELETE!.
+2018-05-27 23:02:16  ECS Delete result:{'error': {'message': 'server [75b31126-0d03-4109-a4ee-d36ad6bc24f2] is the cycle order and not be deleted by ordinary user', 'code': 'Ecs.0000'}}.
+2018-05-27 23:02:16  get project cn-north-1_zhuwentao_dev_region token Successf.
+2018-05-27 23:02:26  get project cn-east-2 token Successf.
+2018-05-27 23:02:27  get project cn-east-2_Dont-lunch-Instance token Successf.
+2018-05-27 23:02:28  get project cn-south-1 token Successf.
+2018-05-27 23:02:29  ECS_name:20180508  id:e361a627-359e-4883-a748-ba5f38b9027a Will be DELETE!.
+2018-05-27 23:02:29  ECS_name:20180508  id:74cbcc90-7f94-4e69-ab86-3e56a74689d3 Will be DELETE!.
+2018-05-27 23:02:29  ECS Delete result:{'error': {'message': 'server [e361a627-359e-4883-a748-ba5f38b9027a, 74cbcc90-7f94-4e69-ab86-3e56a74689d3] is the cycle order and not be deleted by ordinary user', 'code': 'Ecs.0000'}}.
+2018-05-27 23:02:30  get project cn-south-1_monitor-Tencent token Successf.
+2018-05-27 23:02:31  get project ap-southeast-1 token Successf.
+2018-05-27 23:03:08  get project cn-north-1 token Successful.
+2018-05-27 23:03:09  ECS_name:Windows云主机无法访问外网_技术服务部  id:75b31126-0d03-4109-a4ee-d36ad6bc24f2 Will be DELETE!.
+2018-05-27 23:03:10  ECS Delete result:{'error': {'message': 'server [75b31126-0d03-4109-a4ee-d36ad6bc24f2] is the cycle order and not be deleted by ordinary user', 'code': 'Ecs.0000'}}.
+2018-05-27 23:03:10  get project cn-north-1_zhuwentao_dev_region token Successful.
+2018-05-27 23:03:11  get project cn-east-2 token Successful.
+2018-05-27 23:03:12  get project cn-east-2_Dont-lunch-Instance token Successful.
+2018-05-27 23:03:14  get project cn-south-1 token Successful.
+2018-05-27 23:03:14  ECS_name:20180508  id:e361a627-359e-4883-a748-ba5f38b9027a Will be DELETE!.
+2018-05-27 23:03:14  ECS_name:20180508  id:74cbcc90-7f94-4e69-ab86-3e56a74689d3 Will be DELETE!.
+2018-05-27 23:03:15  ECS Delete result:{'error': {'message': 'server [e361a627-359e-4883-a748-ba5f38b9027a, 74cbcc90-7f94-4e69-ab86-3e56a74689d3] is the cycle order and not be deleted by ordinary user', 'code': 'Ecs.0000'}}.
+2018-05-27 23:03:15  get project cn-south-1_monitor-Tencent token Successful.
+2018-05-27 23:03:16  get project ap-southeast-1 token Successful.
