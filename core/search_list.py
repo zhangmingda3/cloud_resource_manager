@@ -12,7 +12,7 @@ def search_ecs(token,url_project,sub_project_id):
 
 def search_publicips(token,url_project,sub_project_id):
     url = 'https://vpc.{_project}.myhuaweicloud.com/v1/{tenant_id}/publicips'.format(_project=url_project,tenant_id=sub_project_id)
-    print(url)
+    # print(url)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.get(url=url,headers=headers)
     # print(r.json())
@@ -42,7 +42,46 @@ def search_port_owner(token,url_project,port_id):
     else:
         return device_owner
     # return r.json()['bandwidth']['charge_mode']
-# https://vpc.ap-southeast-1.myhuaweicloud.com/v1/ccce0d1ed57e4621bce16ed18d8e8f71/publicips
+
+def search_snat_rules(token,url_project):#,sub_project_id
+    url = 'https://nat.{_project}.myhuaweicloud.com/v2.0/snat_rules'.format(_project=url_project)
+    # print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url, headers=headers)
+    # print(r.json())
+    return r.json()['snat_rules']
+def search_dnat_rules(token,url_project):#,sub_project_id
+    url = 'https://nat.{_project}.myhuaweicloud.com/v2.0/dnat_rules'.format(_project=url_project)
+    # print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url, headers=headers)
+    return r.json()['dnat_rules']
+    # print(r.json())
+def search_elb_list(token, url_project,sub_project_id):
+    url = 'https://elb.{_project}.myhuaweicloud.com/v1.0/{tenant_id}/elbaas/loadbalancers'.format(_project=url_project,tenant_id=sub_project_id)
+    print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url,headers=headers)
+    try:
+        r.json()["loadbalancers"]
+    except KeyError:
+        return r.json()
+    else:
+        return r.json()["loadbalancers"]
+def search_enhance_elb_list(token, url_project):
+    url = 'https://vpc.{_project}.myhuaweicloud.com/v2.0/lbaas/loadbalancers'.format(_project=url_project)
+    print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url,headers=headers)
+    try:
+        r.json()["loadbalancers"]
+    except KeyError:
+        return r.json()
+    else:
+        return r.json()["loadbalancers"]
+
+# https://vpc.ap-sout
+# heast-1.myhuaweicloud.com/v1/ccce0d1ed57e4621bce16ed18d8e8f71/publicips
 # import os,sys,time
 # BASE_NAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # sys.path.append(BASE_NAME)

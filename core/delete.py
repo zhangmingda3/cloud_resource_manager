@@ -15,8 +15,21 @@ def del_ecs(token,url_project,sub_project_id,DELETE_list):
     # print(r.json())
     return r.json()
 def del_publicip(token,url_project,sub_project_id,publicip_id):
+    '''调用V1接口删除单个IP地址'''
     url = 'https://vpc.{_project}.myhuaweicloud.com/v1/{tenant_id}/publicips/{publicip_id}'.format(_project=url_project,tenant_id=sub_project_id,publicip_id=publicip_id)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.delete(url=url,headers=headers)
     return r.status_code
 
+def del_snat_rule(token,url_project,snat_rule_id):
+    url = 'https://nat.{_project}.myhuaweicloud.com/v2.0/snat_rules/{_snat_rule_id}'.format(_project=url_project,_snat_rule_id=snat_rule_id) #DELETE
+    # print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.delete(url=url, headers=headers)
+    return r.status_code
+def del_dnat_rule(token,url_project,dnat_rule_id):
+    url = 'https://nat.{_project}.myhuaweicloud.com/v2.0/dnat_rules/{_dnat_rule_id}'.format(_project=url_project,_dnat_rule_id=dnat_rule_id) #DELETE
+    # print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.delete(url=url, headers=headers)
+    return r.status_code
