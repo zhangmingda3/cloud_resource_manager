@@ -9,7 +9,8 @@ off_time = {
     'ecs':3 #小时后关机
 }
 del_time = {
-    'ecs':4 #小时后删除
+    'ecs':4, #小时后删除
+    'publicip':4
 }
 Endpoint_project_id = {
     'cn-north-1':{'cn-north-1':'52fb7d7429d04068ae8ff9632106e701','cn-north-1_zhuwentao_dev_region':'0875ac8913ae4f30b49fc993a02670bc'},
