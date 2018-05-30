@@ -17,7 +17,6 @@ def search_ecs(token,url_project,sub_project_id):
 
 def search_publicips(token,url_project,sub_project_id):
     url = 'https://vpc.{_project}.myhuaweicloud.com/v1/{tenant_id}/publicips'.format(_project=url_project,tenant_id=sub_project_id)
-    # print(url)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.get(url=url,headers=headers)
     # print(r.json())

@@ -9,9 +9,9 @@ def poweoff_ecs(token,url_project,sub_project_id,SHUT_list):
     body = {
         "os-stop": {
             "type": "HARD",
-            "servers": SHUT_list['id']
+            "servers": SHUT_list['id_dict']
         }
     }
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.post(url,json=body,headers=headers)
-    logger.logger('shut_off_ecs','%s   ECS %s Shut Off result:%s return_code:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), SHUT_list['username'], r.json(),r.status_code))
+    logger.logger('shut_off_ecs','%s   ECS: %s Shut Off!  result:%s return_code:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), SHUT_list['username'], r.json(),r.status_code))

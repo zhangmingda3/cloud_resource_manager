@@ -9,7 +9,7 @@ from conf import settings,protected
 def manager_ecs(token,url_project,sub_project_id):
     '''清理一个sub_project_id下的ECS资源'''
     ecs_list = search_list.search_ecs(token, url_project, sub_project_id)
-    SHUTOFF_list = {'id':[],'username':[]}
+    SHUTOFF_list = {'id_dict':[],'username':[]}
     DELETE_list = {'id':[],'username':[]}
     for ecs in ecs_list:
         ecs_id = ecs["id"]
@@ -20,18 +20,12 @@ def manager_ecs(token,url_project,sub_project_id):
         user_id = ecs['user_id']
         ecs_name = ecs['name']
         if ecs_id not in protected.ECS and time.time() > SHUTOFF_time and ecs_status != "SHUTOFF":
-            SHUTOFF_list['id'].append({"id":ecs_id})
+            SHUTOFF_list['id_dict'].append({"id":ecs_id})
             SHUTOFF_list['username'].append(ecs_name)
-            # logger.logger('%s  ECS_name:%s  id:%s Will be Shut Off.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),ecs_name,ecs_id))
         if ecs_id not in protected.ECS and time.time() > DELETE_time:
-            DELETE_list['id'].append({'id':ecs_id})
-            DELETE_list['username'].append(ecs_name)
-            # logger.logger('%s  ECS_name:%s  id:%s Will be DELETE!.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), ecs_name, ecs_id))
+            delete.del_ecs(token, url_project, sub_project_id, ecs_id, ecs_name)
     if len(SHUTOFF_list['id']) >0:
         poweroff.poweoff_ecs(token, url_project, sub_project_id, SHUTOFF_list)
-    if len(DELETE_list['id']) >0:
-        delete.del_ecs(token,url_project,sub_project_id,DELETE_list)
-
 
 def  manager_publicips(token, url_project, sub_project_id):
     publicips = search_list.search_publicips(token, url_project, sub_project_id)
@@ -47,18 +41,13 @@ def  manager_publicips(token, url_project, sub_project_id):
                 publicip_id = publicip['id']
                 ipaddress = publicip['public_ip_address']
                 if publicip['status'] == 'DOWN':
-                    bandwidth_charge_mode = search_list.search_bandwidth_charge_mode(token,url_project,sub_project_id,publicip['bandwidth_id'])
+                    # bandwidth_charge_mode = search_list.search_bandwidth_charge_mode(token,url_project,sub_project_id,publicip['bandwidth_id'])
                     # print(ipaddress,publicip['status'],bandwidth_charge_mode)
-                    del_down_results = delete.del_publicip(token,url_project,sub_project_id,publicip_id)
-                    logger.logger('%s  publicip %s delete result:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),ipaddress,del_down_results))
-                    print(del_down_results)
+                    delete.del_publicip(token,url_project,sub_project_id,publicip_id,ipaddress)
                 elif publicip['status'] == 'ACTIVE':
                     port_type = search_list.search_port_owner(token,url_project,publicip['port_id'])
                     if port_type != 'network:nat_gateway':#不是NAT网关的IP就删除
-                        print(ipaddress, publicip['status'], publicip['port_id'], port_type)
-                        del_active_notnat_results = delete.del_publicip(token, url_project, sub_project_id, publicip_id)
-                        logger.logger('%s  publicip %s  not ant delete  result:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), ipaddress, del_active_notnat_results))
-                        print(del_active_notnat_results)
+                        delete.del_publicip(token, url_project, sub_project_id, publicip_id, ipaddress)
                     else:
                         del_nat_rules_iplist.append(ipaddress)
                     # else:
@@ -84,18 +73,14 @@ def manager_nat_rules(token,url_project,del_nat_rules_iplist):
                     # print(snat_rule)
                     # snat_rule_id = snat_rule['id']
                     # print('snat rule', nat_ipaddress, snat_rule_id)
-                    del_snat_rule_result = delete.del_snat_rule(token, url_project, snat_rule['id'])
-                    logger.logger('%s  delete snat_rules_ip %s return_code:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),nat_ipaddress,del_snat_rule_result))
-
+                    delete.del_snat_rule(token, url_project, snat_rule['id'],nat_ipaddress)
         dnat_list = search_list.search_dnat_rules(token, url_project)
         for nat_ipaddress in del_nat_rules_iplist:
             for dnat_rule in dnat_list:
                 if nat_ipaddress == dnat_rule['floating_ip_address']:
                     # dnat_rule_id = dnat_rule['id']
                     # print('dnat rule', nat_ipaddress, dnat_rule_id)
-                    del_dnat_rule_result = delete.del_dnat_rule(token, url_project, dnat_rule['id'])
-                    logger.logger('%s  delete dnat_rules_ip %s return_code:%s.\n' % (
-                    time.strftime("%Y-%m-%d %H:%M:%S"), nat_ipaddress, del_dnat_rule_result))
+                    delete.del_dnat_rule(token, url_project, dnat_rule['id'],nat_ipaddress)
     # print(snat_list)
     # for snat in snat_list:
     #     snat_id = snat['id']
@@ -132,13 +117,18 @@ def run():
             if token:
                 # manager_elb(token, url_project, sub_project_id,)
                 # manager_nat_rules(token, url_project)
+
                 # manager_ecs(token,url_project,sub_project_id)
                 manager_publicips(token, url_project, sub_project_id)
+
                 # publicips = search_list.search_publicips(token, url_project, sub_project_id)
                 # elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
                 # print(elb_list)
                 # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
                 # print(enhance_elb_list)
+                # delete.del_ecs(token, url_project, sub_project_id, "e9f2ac2a-1a54-4b38-8348-0f741a0de447", 'zmd')
+                #delete.del_publicip(token,url_project,sub_project_id,'5e7702c6-a72c-4de0-9e96-bfec9f72b015','114.115.146.228')
+
 
 
 run()
