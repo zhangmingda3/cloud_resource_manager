@@ -54,7 +54,7 @@ def  manager_publicips(token, url_project, sub_project_id):
                     del_elb_iplist.append(ipaddress)
     # print('del_nat_rules_iplist:',del_nat_rules_iplist)
     manager_nat_rules(token, url_project, del_nat_rules_iplist)
-    # manager_elb(token, url_project, sub_project_id, del_elb_iplist)
+    manager_elb(token, url_project, sub_project_id, del_elb_iplist)
                     # create_time = publicip['create_time']
                     # print(ipaddress,id,create_time,bandwidth_charge_mode,publicip['status'])#bandwidth_charge_mode
 
@@ -65,16 +65,11 @@ def manager_nat_rules(token,url_project,del_nat_rules_iplist):
         for nat_ipaddress in del_nat_rules_iplist:
             for snat_rule in snat_list:
                 if nat_ipaddress == snat_rule['floating_ip_address']:
-                    # print(snat_rule)
-                    # snat_rule_id = snat_rule['id']
-                    # print('snat rule', nat_ipaddress, snat_rule_id)
                     delete.del_snat_rule(token, url_project, snat_rule['id'],nat_ipaddress)
         dnat_list = search_list.search_dnat_rules(token, url_project)
         for nat_ipaddress in del_nat_rules_iplist:
             for dnat_rule in dnat_list:
                 if nat_ipaddress == dnat_rule['floating_ip_address']:
-                    # dnat_rule_id = dnat_rule['id']
-                    # print('dnat rule', nat_ipaddress, dnat_rule_id)
                     delete.del_dnat_rule(token, url_project, dnat_rule['id'],nat_ipaddress)
     # print(snat_list)
     # for snat in snat_list:
@@ -86,21 +81,13 @@ def manager_nat_rules(token,url_project,del_nat_rules_iplist):
     # dnat_list = search_list.search_dnat_rules(token, url_project)
     # print(dnat_list)
 
-# def manager_elb(token, url_project,sub_project_id,del_elb_iplist):
-#
-#     if len(del_elb_iplist) > 0:
-#         # pass
-#         elb_list = search_list.search_elb_list(token, url_project,sub_project_id)
-#     # if type(elb_list) is list:
-#         print(elb_list)
-#     # else:
-    #     print('elb_list is not list ',elb_list)
-    # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
-    # if type(enhance_elb_list) is list:
-    #     print(enhance_elb_list)
-    # else:
-    #     print('elb_list is not list ',enhance_elb_list)
-    # # print(enhance_elb_list)
+def manager_elb(token, url_project,sub_project_id): #,del_elb_iplist
+
+    # if len(del_elb_iplist) > 0:
+    elb_list = search_list.search_elb_list(token, url_project,sub_project_id)
+    print(elb_list['vip_address'],elb_list[''])
+    enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
+    print('enhance_elb_list',enhance_elb_list)
 
 def run():
     for url_project in settings.Endpoint_project_id:
@@ -110,12 +97,9 @@ def run():
             # print(sub_project, sub_project_id,)
             token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],url_project,sub_project)
             if token:
-                # manager_elb(token, url_project, sub_project_id,)
-                # manager_nat_rules(token, url_project)
-
                 # manager_ecs(token,url_project,sub_project_id)
                 # manager_publicips(token, url_project, sub_project_id)
-
+                manager_elb(token, url_project, sub_project_id,)
                 # publicips = search_list.search_publicips(token, url_project, sub_project_id)
                 # elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
                 # print(elb_list)
@@ -123,7 +107,9 @@ def run():
                 # print(enhance_elb_list)
                 # delete.del_ecs(token, url_project, sub_project_id, "e9f2ac2a-1a54-4b38-8348-0f741a0de447", 'zmd')
                 #delete.del_publicip(token,url_project,sub_project_id,'5e7702c6-a72c-4de0-9e96-bfec9f72b015','114.115.146.228')
-                delete.del_snat_rule(token, url_project, snat_rule_id, nat_ipaddress)
+                # delete.del_snat_rule(token, url_project, '095bd508-5c71-484f-bedc-38696e7b6589', '49.4.49.4')
+                # delete.del_dnat_rule(token, url_project, 'c74cf897-b841-44bc-b93a-bd971daf0375', '49.4.49.4')
+                # manager_nat_rules(token, url_project, ['49.4.48.102','49.4.49.4'])
 
 
 

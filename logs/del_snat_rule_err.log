@@ -1,0 +1,3 @@
+2018-05-30 14:17:42  delete snat_rules_ip: 49.4.49.4 Failed info:{'NeutronError': {'message': 'No Snat Rule exist with id 2584a9fe-f5fd-497e-bbfb-caaa54318488', 'type': 'NoSnatRuleExist', 'detail': ''}} return_code:404.
+2018-05-30 14:20:21  delete snat_rules_ip: 49.4.49.4 Failed info:{'NeutronError': {'message': 'No Snat Rule exist with id 095bd508-5c71-484f-bedc-38696e7b6589', 'type': 'NoSnatRuleExist', 'detail': ''}} return_code:404.
+2018-05-30 14:20:30  delete snat_rules_ip: 49.4.49.4 Failed info:{'NeutronError': {'message': 'No Snat Rule exist with id 095bd508-5c71-484f-bedc-38696e7b6589', 'type': 'NoSnatRuleExist', 'detail': ''}} return_code:404.

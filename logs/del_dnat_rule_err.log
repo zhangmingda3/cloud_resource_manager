@@ -1,0 +1,2 @@
+2018-05-30 14:20:21  delete dnat_rules_ip: 49.4.49.4 Failed info:{'NeutronError': {'message': 'No Dnat Rule exist with id c74cf897-b841-44bc-b93a-bd971daf0375', 'type': 'NoDnatRuleExist', 'detail': ''}} return_code:404.
+2018-05-30 14:20:30  delete dnat_rules_ip: 49.4.49.4 Failed info:{'NeutronError': {'message': 'No Dnat Rule exist with id c74cf897-b841-44bc-b93a-bd971daf0375', 'type': 'NoDnatRuleExist', 'detail': ''}} return_code:404.

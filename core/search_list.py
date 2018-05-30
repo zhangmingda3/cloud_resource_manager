@@ -84,7 +84,7 @@ def search_dnat_rules(token,url_project):#,sub_project_id
     # print(r.json())
 def search_elb_list(token, url_project,sub_project_id):
     url = 'https://elb.{_project}.myhuaweicloud.com/v1.0/{tenant_id}/elbaas/loadbalancers'.format(_project=url_project,tenant_id=sub_project_id)
-    # print(url)
+    print(url)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.get(url=url,headers=headers)
     try:
@@ -96,7 +96,7 @@ def search_elb_list(token, url_project,sub_project_id):
         return r.json()["loadbalancers"]
 def search_enhance_elb_list(token, url_project):
     url = 'https://vpc.{_project}.myhuaweicloud.com/v2.0/lbaas/loadbalancers'.format(_project=url_project)
-    # print(url)
+    print(url)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.get(url=url,headers=headers)
     try:
