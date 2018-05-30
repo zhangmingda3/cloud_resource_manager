@@ -20,17 +20,18 @@ def manager_ecs(token,url_project,sub_project_id):
         user_id = ecs['user_id']
         ecs_name = ecs['name']
         if ecs_id not in protected.ECS and time.time() > SHUTOFF_time and ecs_status != "SHUTOFF":
-            SHUTOFF_list['id'].append({"id":ecs_id});SHUTOFF_list['username'].append(ecs_name)
-            logger.logger('%s  ECS_name:%s  id:%s Will be Shut Off.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),ecs_name,ecs_id))
+            SHUTOFF_list['id'].append({"id":ecs_id})
+            SHUTOFF_list['username'].append(ecs_name)
+            # logger.logger('%s  ECS_name:%s  id:%s Will be Shut Off.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),ecs_name,ecs_id))
         if ecs_id not in protected.ECS and time.time() > DELETE_time:
-            DELETE_list['id'].append({'id':ecs_id});DELETE_list['username'].append(ecs_name)
-            logger.logger('%s  ECS_name:%s  id:%s Will be DELETE!.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), ecs_name, ecs_id))
+            DELETE_list['id'].append({'id':ecs_id})
+            DELETE_list['username'].append(ecs_name)
+            # logger.logger('%s  ECS_name:%s  id:%s Will be DELETE!.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), ecs_name, ecs_id))
     if len(SHUTOFF_list['id']) >0:
-        poweroff_results = poweroff.poweoff_ecs(token, url_project, sub_project_id, SHUTOFF_list['id'])
-        logger.logger('%s   ECS %s Shut Off result:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), SHUTOFF_list['username'],poweroff_results))
+        poweroff.poweoff_ecs(token, url_project, sub_project_id, SHUTOFF_list)
     if len(DELETE_list['id']) >0:
-        delete_results = delete.del_ecs(token,url_project,sub_project_id,DELETE_list['id'])
-        logger.logger('%s  ECS %s Delete result:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),DELETE_list['username'],delete_results))
+        delete.del_ecs(token,url_project,sub_project_id,DELETE_list)
+
 
 def  manager_publicips(token, url_project, sub_project_id):
     publicips = search_list.search_publicips(token, url_project, sub_project_id)
@@ -60,7 +61,6 @@ def  manager_publicips(token, url_project, sub_project_id):
                         print(del_active_notnat_results)
                     else:
                         del_nat_rules_iplist.append(ipaddress)
-
                     # else:
                     #     print(ipaddress, publicip['status'], publicip['port_id'], port_type)
                     #     del_active_NAT_results = delete.del_publicip(token, url_project, sub_project_id, publicip_id)
@@ -70,17 +70,18 @@ def  manager_publicips(token, url_project, sub_project_id):
                     del_elb_iplist.append(ipaddress)
     # print('del_nat_rules_iplist:',del_nat_rules_iplist)
     manager_nat_rules(token, url_project, del_nat_rules_iplist)
-    manager_elb(token, url_project, sub_project_id, del_elb_iplist)
-                    # publicip_address = publicip['public_ip_address']
+    # manager_elb(token, url_project, sub_project_id, del_elb_iplist)
                     # create_time = publicip['create_time']
                     # print(ipaddress,id,create_time,bandwidth_charge_mode,publicip['status'])#bandwidth_charge_mode
 
 def manager_nat_rules(token,url_project,del_nat_rules_iplist):
     if len(del_nat_rules_iplist) > 0:
+        # print(del_nat_rules_iplist)
         snat_list = search_list.search_snat_rules(token,url_project)
         for nat_ipaddress in del_nat_rules_iplist:
             for snat_rule in snat_list:
                 if nat_ipaddress == snat_rule['floating_ip_address']:
+                    # print(snat_rule)
                     # snat_rule_id = snat_rule['id']
                     # print('snat rule', nat_ipaddress, snat_rule_id)
                     del_snat_rule_result = delete.del_snat_rule(token, url_project, snat_rule['id'])
@@ -105,13 +106,14 @@ def manager_nat_rules(token,url_project,del_nat_rules_iplist):
     # dnat_list = search_list.search_dnat_rules(token, url_project)
     # print(dnat_list)
 
-def manager_elb(token, url_project,sub_project_id,del_elb_iplist):
-    if len(del_elb_iplist) > 0:
-        pass
-    # elb_list = search_list.search_elb_list(token, url_project,sub_project_id)
-    # if type(elb_list) is list:
-    #     print(elb_list)
-    # else:
+# def manager_elb(token, url_project,sub_project_id,del_elb_iplist):
+#
+#     if len(del_elb_iplist) > 0:
+#         # pass
+#         elb_list = search_list.search_elb_list(token, url_project,sub_project_id)
+#     # if type(elb_list) is list:
+#         print(elb_list)
+#     # else:
     #     print('elb_list is not list ',elb_list)
     # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
     # if type(enhance_elb_list) is list:
@@ -128,11 +130,15 @@ def run():
             # print(sub_project, sub_project_id,)
             token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],url_project,sub_project)
             if token:
-                manager_elb(token, url_project, sub_project_id)
+                # manager_elb(token, url_project, sub_project_id,)
                 # manager_nat_rules(token, url_project)
                 # manager_ecs(token,url_project,sub_project_id)
-                # manager_publicips(token, url_project, sub_project_id)
+                manager_publicips(token, url_project, sub_project_id)
                 # publicips = search_list.search_publicips(token, url_project, sub_project_id)
+                # elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
+                # print(elb_list)
+                # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
+                # print(enhance_elb_list)
 
 
 run()

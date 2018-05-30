@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # Author:Zhangmingda
 import os,sys,requests,time
-BASE_NAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_NAME)
+# BASE_NAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# sys.path.append(BASE_NAME)
 from core import logger
 
 def get_token(domainname,username,password,url_project,sub_project):
@@ -17,8 +17,8 @@ def get_token(domainname,username,password,url_project,sub_project):
         if r.status_code == 201:
                 token = r.headers['X-Subject-Token']
                 # print(token)
-                logger.logger('%s  get project %s token Successful.\n'%(time.strftime("%Y-%m-%d %H:%M:%S"),sub_project) )
+                logger.logger('get_token_OK','%s  get project %s token Successful.\n'%(time.strftime("%Y-%m-%d %H:%M:%S"),sub_project) )
                 return token
         else:
-                logger.logger('%s  get project %s token Failed.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),sub_project))
+                logger.logger('get_token_failed','%s  get project %s token Failed.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),sub_project))
                 return
