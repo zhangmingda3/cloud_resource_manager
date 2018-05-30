@@ -46,15 +46,10 @@ def  manager_publicips(token, url_project, sub_project_id):
                     delete.del_publicip(token,url_project,sub_project_id,publicip_id,ipaddress)
                 elif publicip['status'] == 'ACTIVE':
                     port_type = search_list.search_port_owner(token,url_project,publicip['port_id'])
-                    if port_type != 'network:nat_gateway':#不是NAT网关的IP就删除
+                    if port_type != 'network:nat_gateway':          #不是NAT网关的IP就删除
                         delete.del_publicip(token, url_project, sub_project_id, publicip_id, ipaddress)
                     else:
                         del_nat_rules_iplist.append(ipaddress)
-                    # else:
-                    #     print(ipaddress, publicip['status'], publicip['port_id'], port_type)
-                    #     del_active_NAT_results = delete.del_publicip(token, url_project, sub_project_id, publicip_id)
-                    #     logger.logger('%s  publicip %s delete result:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), ipaddress, del_active_NAT_results))
-                    #     print(del_active_NAT_results)
                 elif publicip['status'] == 'ELB':
                     del_elb_iplist.append(ipaddress)
     # print('del_nat_rules_iplist:',del_nat_rules_iplist)
@@ -119,7 +114,7 @@ def run():
                 # manager_nat_rules(token, url_project)
 
                 # manager_ecs(token,url_project,sub_project_id)
-                manager_publicips(token, url_project, sub_project_id)
+                # manager_publicips(token, url_project, sub_project_id)
 
                 # publicips = search_list.search_publicips(token, url_project, sub_project_id)
                 # elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
@@ -128,6 +123,7 @@ def run():
                 # print(enhance_elb_list)
                 # delete.del_ecs(token, url_project, sub_project_id, "e9f2ac2a-1a54-4b38-8348-0f741a0de447", 'zmd')
                 #delete.del_publicip(token,url_project,sub_project_id,'5e7702c6-a72c-4de0-9e96-bfec9f72b015','114.115.146.228')
+                delete.del_snat_rule(token, url_project, snat_rule_id, nat_ipaddress)
 
 
 
