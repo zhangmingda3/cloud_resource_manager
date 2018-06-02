@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # Author:Zhangmingda
+#将不受管理的资源写到这个文件
+#ecs为id；IP直接写IP地址
 ECS = [
     'd872850f-f312-4188-ae94-0b52d9b40a79',#zhangmingda
     'f75b12ac-04db-41f0-9bd1-0fd61516d7d8',#华北包月

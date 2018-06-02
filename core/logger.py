@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 def logger(filename,message):
+    '''这是一个非常low的日志记录功能'''
     log_file = "{base_dir}/logs/{filename}.log".format(base_dir=BASE_DIR,filename=filename)
     if  os.path.isfile(log_file):
         with open(log_file,'a+',encoding='utf-8') as f:

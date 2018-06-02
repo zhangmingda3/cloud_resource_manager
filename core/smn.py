@@ -4,6 +4,9 @@ import requests,time
 from core import logger
 
 def smn(token,url_project,sub_project_id,phone_list,message):
+    '''调用smn接口发送短信，可以批量发送，传入的电话号码为列表
+    message:发送的消息内容字符串
+    '''
     url = "https://smn.{_project}.myhwclouds.com/v2/{sub_project_id}/notifications/sms".format(_project=url_project,sub_project_id=sub_project_id)
     for phone in phone_list:
         body = {"endpoint": phone, "message": message}
