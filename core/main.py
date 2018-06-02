@@ -125,15 +125,16 @@ def manager_elb(token, url_project,sub_project_id,del_elb_iplist,smn_token, smn_
 
 
 def run():
+    smn_token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],settings.smn_project, settings.smn_project)
+    smn_project = settings.smn_project
+    smn_project_id = settings.Endpoint_project_id[smn_project][smn_project]
     for url_project in settings.Endpoint_project_id:
         # print(url_project)
         for sub_project in settings.Endpoint_project_id[url_project]:
             sub_project_id = settings.Endpoint_project_id[url_project][sub_project]
             # print(sub_project, sub_project_id,)
             token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],url_project,sub_project)
-            smn_token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],settings.smn_project,settings.smn_project)
-            smn_project = settings.smn_project
-            smn_project_id = settings.Endpoint_project_id[smn_project][smn_project]
+
             if token:
                 manager_ecs(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
                 manager_publicips(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
