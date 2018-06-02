@@ -69,6 +69,7 @@ def  manager_publicips(token, url_project, sub_project_id,smn_token, smn_project
     manager_elb(token, url_project, sub_project_id,del_elb_iplist,smn_token, smn_project, smn_project_id)
 
 def manager_nat_rules(token,url_project,del_nat_rules_iplist):
+    '''删除相关snat或者dnat规则'''
     if len(del_nat_rules_iplist) > 0:
         # print(del_nat_rules_iplist)
         snat_list = search_list.search_snat_rules(token,url_project)
@@ -125,6 +126,7 @@ def manager_elb(token, url_project,sub_project_id,del_elb_iplist,smn_token, smn_
 
 
 def run():
+    '''调用这个函数来获取token，token获取OK然后做资源的管理'''
     smn_token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],settings.smn_project, settings.smn_project)
     smn_project = settings.smn_project
     smn_project_id = settings.Endpoint_project_id[smn_project][smn_project]
