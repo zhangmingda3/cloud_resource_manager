@@ -1,1 +1,8 @@
 2018-05-30 10:19:25   ECS ['华北公共报障排查-禁止私自重装'] Shut Off result:{'job_id': '8aace0c863ac51550163aed7c494439b'} return_code:200.
+2018-05-31 20:45:41   ECS: ['xuchao'] Shut Off!  result:{'job_id': '8aace0c763ac50390163b63b7cd85d33'} return_code:200.
+2018-05-31 20:45:51   ECS: ['王亚勇-Centos7'] Shut Off!  result:{'job_id': '8a0eaa9663929db50163b63ba47562cb'} return_code:200.
+2018-06-01 15:53:58   ECS: ['xuchao-test'] Shut Off!  result:{'job_id': '8aace0c863ac51550163ba56c4b42aec'} return_code:200.
+2018-06-01 15:54:12   ECS: ['王亚勇-Centos7'] Shut Off!  result:{'job_id': '8a0eaa9563929c8e0163ba56facb1ff9'} return_code:200.
+2018-06-01 18:38:52   ECS: ['ecs-zhangyang', 'xuchao-test'] Shut Off!  result:{'job_id': '8aace0c863ac51550163baedbb48697d'} return_code:200.
+2018-06-02 08:08:35   ECS: ['zhangmingdatest'] Shut Off!  result:{'job_id': '8aace0c663ac4f150163bdd30e633c71'} return_code:200.
+2018-06-02 08:08:56   ECS: ['xuchao'] Shut Off!  result:{'job_id': 'ff8080826397de940163bdd35e6935d7'} return_code:200.

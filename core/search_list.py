@@ -84,7 +84,7 @@ def search_dnat_rules(token,url_project):#,sub_project_id
     # print(r.json())
 def search_elb_list(token, url_project,sub_project_id):
     url = 'https://elb.{_project}.myhuaweicloud.com/v1.0/{tenant_id}/elbaas/loadbalancers'.format(_project=url_project,tenant_id=sub_project_id)
-    print(url)
+    # print(url)
     headers = {"Content-type": "application/json", "X-Auth-Token": token}
     r = requests.get(url=url,headers=headers)
     try:
@@ -106,6 +106,48 @@ def search_enhance_elb_list(token, url_project):
         return []
     else:
         return r.json()["loadbalancers"]
+
+def search_elb_listeners(token, url_project,sub_project_id,loadbalancer_id):
+    url = 'https://elb.{_project}.myhuaweicloud.com/v1.0/{tenant_id}/elbaas/listeners?loadbalancer_id={loadbalancer_id}'.format(_project=url_project,tenant_id=sub_project_id,loadbalancer_id=loadbalancer_id)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url, headers=headers)
+    if r.status_code == 200:
+        return r.json()
+    else:
+        logger.logger('search_elb_listeners_error', '%s  search elb_listeners Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
+        return []
+def search_enhance_elb_listeners(token, url_project):
+    url = 'https://vpc.{_project}.myhuaweicloud.com/v2.0/lbaas/listeners'.format(_project=url_project)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url, headers=headers)
+    if r.status_code == 200:
+        print(r.json()["listeners"])
+        return r.json()["listeners"]
+    else:
+        logger.logger('search_elb_listeners_error', '%s  search elb_listeners Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
+        return []
+
+def search_elb_listen_backend_ecs_list(token, url_project,sub_project_id,listener_id):
+    url = 'https://elb.{_project}.myhuaweicloud.com/v1.0/{tenant_id}/elbaas/listeners/{listener_id}/members?limit=100'.format(_project=url_project,tenant_id=sub_project_id,listener_id=listener_id)
+    # print(url)
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url, headers=headers)
+    if r.status_code == 200:
+        return r.json()
+    else:
+        logger.logger('search_elb_listen_backend_ecs_list_error', '%s  search elb_listener_backend_ecs Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
+        return []
+
+def search_enhance_elb_healthmonitors(token, url_project):
+    url = 'https://vpc.{_project}.myhuaweicloud.com/v2.0/lbaas/healthmonitors'.format(_project=url_project) #GET
+    headers = {"Content-type": "application/json", "X-Auth-Token": token}
+    r = requests.get(url=url,headers=headers)
+    if r.status_code == 200:
+        print(r.json()["healthmonitors"])
+        return r.json()["healthmonitors"]
+    else:
+        logger.logger('search_enhance_elb_"healthmonitors"_error', '%s  search elb_listeners Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
+        return []
 
 # https://vpc.ap-sout
 # heast-1.myhuaweicloud.com/v1/ccce0d1ed57e4621bce16ed18d8e8f71/publicips

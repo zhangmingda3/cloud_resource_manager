@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # Author:Zhangmingda
 import os,sys,time
-BASE_NAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_NAME)
-from core import get_token,search_list,poweroff,delete,logger
+
+from core import get_token,search_list,poweroff,delete,logger,smn
 from conf import settings,protected
 
-def manager_ecs(token,url_project,sub_project_id):
-    '''清理一个sub_project_id下的ECS资源'''
+def manager_ecs(token,url_project,sub_project_id,smn_token, smn_project, smn_project_id):
+    '''清理一个sub_project_id下的ECS资源+短信通知'''
     ecs_list = search_list.search_ecs(token, url_project, sub_project_id)
-    SHUTOFF_list = {'id_dict':[],'username':[]}
-    DELETE_list = {'id':[],'username':[]}
+    SHUTOFF_list = {'id_dict':[],'ecs_name':[]}
     for ecs in ecs_list:
         ecs_id = ecs["id"]
         create_stamp = time.mktime(time.strptime(ecs['created'], format("%Y-%m-%dT%H:%M:%SZ"))) + 28800  # 将时间字符串转按指定格式换为元组<class 'time.struct_time'>
@@ -19,44 +17,56 @@ def manager_ecs(token,url_project,sub_project_id):
         ecs_status = ecs['status']
         user_id = ecs['user_id']
         ecs_name = ecs['name']
-        if ecs_id not in protected.ECS and time.time() > SHUTOFF_time and ecs_status != "SHUTOFF":
+        if user_id in settings.userinfo:
+            pass
+        else:
+            settings.userinfo[user_id] = {'phone': settings.all_phone, 'name': settings.iam['domainname']}
+        smn_shut_info = '%s 您好，您的主机：%s 被你累的Down了， 当前自动关机时间为创建后 %d小时 从现在开始%d小时后将自焚。有重要数据请尽快做镜像备份or需长期使用找管理员添加白名单' % (settings.userinfo[user_id]['name'], ecs_name, settings.off_time['ecs'],settings.del_time['ecs'] - settings.off_time['ecs'])
+        smn_del_info = '%s 您好，您的主机：%s 正在自焚....当前设置的自焚时间为创建后 %d小时。' % (settings.userinfo[user_id]['name'], ecs_name, settings.del_time['ecs'])
+
+        if ecs_id not in protected.ECS and time.time() > SHUTOFF_time and ecs_status != "SHUTOFF" and settings.nodel_ecs_name not in ecs_name:
             SHUTOFF_list['id_dict'].append({"id":ecs_id})
-            SHUTOFF_list['username'].append(ecs_name)
-        if ecs_id not in protected.ECS and time.time() > DELETE_time:
+            SHUTOFF_list['ecs_name'].append(ecs_name)
+            smn.smn(smn_token, smn_project, smn_project_id, settings.userinfo[user_id]['phone'], smn_shut_info)
+        if ecs_id not in protected.ECS and time.time() > DELETE_time and settings.nodel_ecs_name not in ecs_name:
             delete.del_ecs(token, url_project, sub_project_id, ecs_id, ecs_name)
-    if len(SHUTOFF_list['id']) >0:
+            smn.smn(smn_token, smn_project, smn_project_id, settings.userinfo[user_id]['phone'], smn_del_info)
+
+    if len(SHUTOFF_list['id_dict']) >0:
         poweroff.poweoff_ecs(token, url_project, sub_project_id, SHUTOFF_list)
 
-def  manager_publicips(token, url_project, sub_project_id):
+def  manager_publicips(token, url_project, sub_project_id,smn_token, smn_project, smn_project_id):
+    '''删除一个project下的弹性IP+短信通知'''
     publicips = search_list.search_publicips(token, url_project, sub_project_id)
     del_nat_rules_iplist = []
     del_elb_iplist = []
     for publicip in publicips:
-        # print(publicip)
-        if  not publicip['profile']['user_id']: # and publicip['bandwidth_share_type'] == 'PER'
+        if  not publicip['profile']['user_id'] and publicip['public_ip_address'] not in protected.EIP: # and publicip['bandwidth_share_type'] == 'PER'
             '''not publicip['profile']['user_id']判断按需计费 PER为独享带宽'''
             create_stamp = time.mktime(time.strptime(publicip['create_time'], format("%Y-%m-%d %H:%M:%S"))) + 28800  # 将时间字符串转按指定格式换为元组<class 'time.struct_time'>
             DEL_time_stamp = create_stamp + settings.del_time['publicip'] * 3600
             if DEL_time_stamp > create_stamp:
                 publicip_id = publicip['id']
                 ipaddress = publicip['public_ip_address']
+                smn_del_ip_info = '%s 您好，您的IP：%s 已被删除，当前按需IP自动删除时间为创建后 %d小时' % (settings.iam['domainname'], ipaddress, settings.del_time['publicip'])
                 if publicip['status'] == 'DOWN':
-                    # bandwidth_charge_mode = search_list.search_bandwidth_charge_mode(token,url_project,sub_project_id,publicip['bandwidth_id'])
-                    # print(ipaddress,publicip['status'],bandwidth_charge_mode)
                     delete.del_publicip(token,url_project,sub_project_id,publicip_id,ipaddress)
+                    # smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone,smn_del_ip_info)
                 elif publicip['status'] == 'ACTIVE':
                     port_type = search_list.search_port_owner(token,url_project,publicip['port_id'])
                     if port_type != 'network:nat_gateway':          #不是NAT网关的IP就删除
                         delete.del_publicip(token, url_project, sub_project_id, publicip_id, ipaddress)
+                        # smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone, smn_del_ip_info)
                     else:
                         del_nat_rules_iplist.append(ipaddress)
                 elif publicip['status'] == 'ELB':
                     del_elb_iplist.append(ipaddress)
-    # print('del_nat_rules_iplist:',del_nat_rules_iplist)
+                else:
+                    delete.del_publicip(token, url_project, sub_project_id, publicip_id, ipaddress)
+                    # smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone, smn_del_ip_info)
+
     manager_nat_rules(token, url_project, del_nat_rules_iplist)
-    manager_elb(token, url_project, sub_project_id, del_elb_iplist)
-                    # create_time = publicip['create_time']
-                    # print(ipaddress,id,create_time,bandwidth_charge_mode,publicip['status'])#bandwidth_charge_mode
+    manager_elb(token, url_project, sub_project_id,del_elb_iplist,smn_token, smn_project, smn_project_id)
 
 def manager_nat_rules(token,url_project,del_nat_rules_iplist):
     if len(del_nat_rules_iplist) > 0:
@@ -81,13 +91,38 @@ def manager_nat_rules(token,url_project,del_nat_rules_iplist):
     # dnat_list = search_list.search_dnat_rules(token, url_project)
     # print(dnat_list)
 
-def manager_elb(token, url_project,sub_project_id): #,del_elb_iplist
+def manager_elb(token, url_project,sub_project_id,del_elb_iplist,smn_token, smn_project, smn_project_id): #,del_elb_iplist
+    '''删除经典负载均衡器里面的公网IP和负载均衡'''
+    if len(del_elb_iplist) > 0 :
+        elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
+        for elb_ip in del_elb_iplist:
+            for elb in elb_list:
+                if elb_ip == elb['vip_address']:
+                    listeners = search_list.search_elb_listeners(token, url_project, sub_project_id, elb['id'])
+                    for listener in listeners:
+                        if listener['member_number'] > 0:
+                            backend_ecs_list = search_list.search_elb_listen_backend_ecs_list(token, url_project, sub_project_id, listener['id'])
+                            for backend_ecs in backend_ecs_list:
+                                delete.remove_elb_listener_ecs(token, url_project, sub_project_id, listener['id'], backend_ecs)
 
-    # if len(del_elb_iplist) > 0:
-    elb_list = search_list.search_elb_list(token, url_project,sub_project_id)
-    print(elb_list['vip_address'],elb_list[''])
-    enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
-    print('enhance_elb_list',enhance_elb_list)
+                    time.sleep(3)
+                    smn_del_ELBip_info = '%s 您好 您的IP：%s(经典型ELB使用)将被删除，使用其的ELB也将删除。当前设置自动删除时间为按需IP创建后 %d小时' % (settings.iam['domainname'], elb_ip, settings.del_time['publicip'])
+                    smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone, smn_del_ELBip_info)
+                    delete.del_elb(token, url_project, sub_project_id, elb['id'], elb['vip_address'])
+
+# def manager_enhance_elb():
+#     enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
+#     for enhance_elb in enhance_elb_list:
+#         # if ipaddress_list in enhance_elb['enhance_elb_listeners']:
+#         print(enhance_elb_list)
+#     # enhance_elb_listeners = search_list.search_enhance_elb_listeners(token, url_project)
+#     # print(enhance_list)
+#
+#                 # print(backend_ecs_list)
+#         # print(listeners)
+#     # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
+#     # print('enhance_elb_list',enhance_elb_list)
+
 
 def run():
     for url_project in settings.Endpoint_project_id:
@@ -96,21 +131,10 @@ def run():
             sub_project_id = settings.Endpoint_project_id[url_project][sub_project]
             # print(sub_project, sub_project_id,)
             token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],url_project,sub_project)
+            smn_token = get_token.get_token(settings.iam['domainname'], settings.iam['username'], settings.iam['password'],settings.smn_project,settings.smn_project)
+            smn_project = settings.smn_project
+            smn_project_id = settings.Endpoint_project_id[smn_project][smn_project]
             if token:
-                # manager_ecs(token,url_project,sub_project_id)
-                # manager_publicips(token, url_project, sub_project_id)
-                manager_elb(token, url_project, sub_project_id,)
-                # publicips = search_list.search_publicips(token, url_project, sub_project_id)
-                # elb_list = search_list.search_elb_list(token, url_project, sub_project_id)
-                # print(elb_list)
-                # enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
-                # print(enhance_elb_list)
-                # delete.del_ecs(token, url_project, sub_project_id, "e9f2ac2a-1a54-4b38-8348-0f741a0de447", 'zmd')
-                #delete.del_publicip(token,url_project,sub_project_id,'5e7702c6-a72c-4de0-9e96-bfec9f72b015','114.115.146.228')
-                # delete.del_snat_rule(token, url_project, '095bd508-5c71-484f-bedc-38696e7b6589', '49.4.49.4')
-                # delete.del_dnat_rule(token, url_project, 'c74cf897-b841-44bc-b93a-bd971daf0375', '49.4.49.4')
-                # manager_nat_rules(token, url_project, ['49.4.48.102','49.4.49.4'])
+                manager_ecs(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
+                manager_publicips(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
 
-
-
-run()

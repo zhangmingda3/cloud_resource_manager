@@ -1,0 +1,1 @@
+2018-05-31 20:45:51  ECS 王亚勇-Centos7 Delete Failed:{'error': {'message': 'server [f75b12ac-04db-41f0-9bd1-0fd61516d7d8] is the cycle order and not be deleted by ordinary user', 'code': 'Ecs.0000'}} return_code:400.

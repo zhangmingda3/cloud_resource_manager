@@ -7,3 +7,23 @@
 2018-05-30 11:49:03  publicip 66bcac8e-c0d0-4ae5-bc67-df865b28c387 delete result:{'code': 'VPC.0514', 'message': '{"NeutronError": {"message": "Floating IP 66bcac8e-c0d0-4ae5-bc67-df865b28c387 could not be found", "type": "FloatingIPNotFound", "detail": ""}}'} return_code:404.
 2018-05-30 11:52:06  publicip 66bcac8e-c0d0-4ae5-bc67-df865b28c387 delete  return_code:404.
 2018-05-30 11:55:28  publicip 114.115.146.228 delete  return_code:204.
+2018-05-30 21:47:23  publicip 114.116.3.121 delete Successful  return_code:204.
+2018-05-30 21:47:25  publicip 49.4.21.150 delete Successful  return_code:204.
+2018-05-30 21:47:27  publicip 114.116.23.204 delete Successful  return_code:204.
+2018-05-30 21:47:28  publicip 49.4.49.4 delete Successful  return_code:204.
+2018-05-30 21:48:02  publicip 119.3.24.83 delete Successful  return_code:204.
+2018-05-30 21:48:11  publicip 159.138.20.164 delete Successful  return_code:204.
+2018-05-30 21:48:13  publicip 159.138.22.189 delete Successful  return_code:204.
+2018-05-31 19:41:51  publicip 	43.254.3.44 delete Successful  return_code:204.
+2018-05-31 19:58:04  publicip 49.4.23.10 delete Successful  return_code:204.
+2018-05-31 20:45:45  publicip 43.254.1.189 delete Successful  return_code:204.
+2018-05-31 20:45:47  publicip 49.4.70.203 delete Successful  return_code:204.
+2018-05-31 20:45:55  publicip 122.112.253.203 delete Successful  return_code:204.
+2018-05-31 20:45:57  publicip 122.112.244.245 delete Successful  return_code:204.
+2018-05-31 20:45:59  publicip 119.3.25.202 delete Successful  return_code:204.
+2018-05-31 20:46:06  publicip 159.138.20.72 delete Successful  return_code:204.
+2018-06-01 18:38:55  publicip 114.116.13.126 delete Successful  return_code:204.
+2018-06-01 18:38:57  publicip 117.78.51.128 delete Successful  return_code:204.
+2018-06-01 18:39:00  publicip 117.78.52.155 delete Successful  return_code:204.
+2018-06-01 18:39:06  publicip 122.112.248.206 delete Successful  return_code:204.
+2018-06-01 18:39:13  publicip 159.138.21.111 delete Successful  return_code:204.

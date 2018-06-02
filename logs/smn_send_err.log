@@ -1,0 +1,8 @@
+2018-06-01 07:57:03  send to [13333392837]  Failed. code:400 info:{'request_id': '44ce8da47fde4a9cb360f32f20007dd0', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:03  send to [13333392837]  Failed. code:400 info:{'request_id': 'd6d59e58e202440ca2f7bd235cefdc07', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:04  send to [13333392837]  Failed. code:400 info:{'request_id': '8ab62d6935f94a2794a78e427932cd14', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:04  send to [13333392837]  Failed. code:400 info:{'request_id': '8c2055b142004a83b863fc1c6b12ffb7', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:04  send to [13333392837]  Failed. code:400 info:{'request_id': '7df98d47bf6c4c1da945b1b1e7d1e771', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:04  send to [13333392837]  Failed. code:400 info:{'request_id': '0a1987d6a74a4c9191736c32430aa193', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:05  send to [13333392837]  Failed. code:400 info:{'request_id': 'b4930fecdacc4c09a790ed1ffc68ff94', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}
+2018-06-01 07:57:05  send to [13333392837]  Failed. code:400 info:{'request_id': '6bb4c724a4f34f9cab526e100079afef', 'code': 'SMN.0012', 'message': 'Parameter: Endpoint is invalid.'}

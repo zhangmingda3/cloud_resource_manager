@@ -1,1 +1,2 @@
 2018-05-30 11:58:19  publicip 114.115.146.228 delete Failed_info:{'code': 'VPC.0514', 'message': '{"NeutronError": {"message": "Floating IP 5e7702c6-a72c-4de0-9e96-bfec9f72b015 could not be found", "type": "FloatingIPNotFound", "detail": ""}}'} return_code:404.
+2018-05-31 19:45:12  publicip 49.4.64.69 delete Failed_info:{'code': 'VPC.0516', 'message': '{"NeutronError":{"message":"Publicip is in used by ELB.","type":"PublicipInUse","detail":""}}'} return_code:500.
