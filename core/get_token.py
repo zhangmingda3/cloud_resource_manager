@@ -20,5 +20,5 @@ def get_token(domainname,username,password,url_project,sub_project):
                 logger.logger('get_token_OK','%s  get project %s token Successful.\n'%(time.strftime("%Y-%m-%d %H:%M:%S"),sub_project) )
                 return token
         else:
-                logger.logger('get_token_failed','%s  get project %s token Failed. return_code:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),sub_project,r.status_code))
+                logger.logger('get_token_failed','%s  get project %s token Failed. return_code:%s ,info %s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"),sub_project,r.status_code,r.json()))
                 return
