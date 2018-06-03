@@ -23,7 +23,7 @@ def search_publicips(token,url_project,sub_project_id):
     try:
         r.json()['publicips']
     except KeyError:
-        logger.logger('search_publicips_error','%s  search publicips_liset Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
+        logger.logger('search_publicips_error','%s  search publicips_list Failed  return_code:%s  info:%s url:%s:.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), r.status_code, r.json(), url))
         return []
     else:
         return r.json()['publicips']
