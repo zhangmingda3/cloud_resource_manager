@@ -45,7 +45,7 @@ def  manager_publicips(token, url_project, sub_project_id,smn_token, smn_project
             '''not publicip['profile']['user_id']判断按需计费 PER为独享带宽'''
             create_stamp = time.mktime(time.strptime(publicip['create_time'], format("%Y-%m-%d %H:%M:%S"))) + 28800  # 将时间字符串转按指定格式换为元组<class 'time.struct_time'>
             DEL_time_stamp = create_stamp + settings.del_time['publicip'] * 3600
-            if DEL_time_stamp > create_stamp:
+            if time.time()> DEL_time_stamp :
                 publicip_id = publicip['id']
                 ipaddress = publicip['public_ip_address']
                 smn_del_ip_info = '%s 您好，您的IP：%s 已被删除，当前按需IP自动删除时间为创建后 %d小时' % (settings.iam['domainname'], ipaddress, settings.del_time['publicip'])
@@ -140,4 +140,3 @@ def run():
             if token:
                 manager_ecs(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
                 manager_publicips(token, url_project, sub_project_id, smn_token, smn_project, smn_project_id)
-

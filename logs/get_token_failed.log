@@ -1,0 +1,5 @@
+2018-06-03 12:00:52  get project cn-north-1 token Failed. return_code:401 ,info {'error': {'message': 'Unauthorized.', 'code': 401, 'title': 'Unauthorized'}}
+2018-06-03 12:00:52  get project cn-north-1 token Failed. return_code:401 ,info {'error': {'message': 'Unauthorized.', 'code': 401, 'title': 'Unauthorized'}}
+2018-06-03 12:00:53  get project cn-east-2 token Failed. return_code:401 ,info {'error': {'message': 'Unauthorized.', 'code': 401, 'title': 'Unauthorized'}}
+2018-06-03 12:00:53  get project cn-south-1 token Failed. return_code:401 ,info {'error': {'message': 'Unauthorized.', 'code': 401, 'title': 'Unauthorized'}}
+2018-06-03 12:00:53  get project ap-southeast-1 token Failed. return_code:401 ,info {'error': {'message': 'Unauthorized.', 'code': 401, 'title': 'Unauthorized'}}

@@ -3,12 +3,12 @@
 import time
 #设置测试账号的用户名和密码
 iam = {
-    # 'domainname':'hwcloudsom1',
-    # 'username':'zhangmingda',
-    # 'password':'237828Zhang?'
-    'domainname': 'XXXXX',
-    'username': 'hXXXXXXX',
-    'password': 'XXXXXXXXXXXXXXX'
+    'domainname':'hwcloudsom1',
+    'username':'zhangmingda',
+    'password':'237828Zhang?'
+    # 'domainname': 'XXXXX',
+    # 'username': 'hXXXXXXX',
+    # 'password': 'XXXXXXXXXXXXXXX'
 }
 #设置不同时段的主机关机和删除时间
 if 9 * 3600 < time.time()%86400 + 28800 < 19 * 3600:
