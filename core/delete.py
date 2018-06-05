@@ -62,8 +62,10 @@ def del_elb(token,url_project,sub_project_id,loadbalancer_id,vip_address):
     r = requests.delete(url=url, headers=headers)
     if r.status_code == 200:
         logger.logger('del_elb', '%s  delete elb_vip_address: %s Successful return_code:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), vip_address, r.status_code))
+        return r.status_code
     else:
         logger.logger('del_elb_err', '%s  delete elb_vip_address: %s Failed return_code:%s info:%s.\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), vip_address, r.status_code,r.json()))
+
 
 def del_enhance_elb(token,url_project,loadbalancer_id,vip_address):
     url = 'https://vpc.{_project}.myhuaweicloud.com/v2.0/lbaas/loadbalancers/{loadbalancer_id}'.format(_project=url_project,loadbalancer_id=loadbalancer_id)

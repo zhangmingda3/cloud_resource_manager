@@ -107,9 +107,10 @@ def manager_elb(token, url_project,sub_project_id,del_elb_iplist,smn_token, smn_
                                 delete.remove_elb_listener_ecs(token, url_project, sub_project_id, listener['id'], backend_ecs)
 
                     time.sleep(3)
-                    smn_del_ELBip_info = '%s 您好 您的IP：%s(经典型ELB使用)将被删除，使用其的ELB也将删除。当前设置自动删除时间为按需IP创建后 %d小时' % (settings.iam['domainname'], elb_ip, settings.del_time['publicip'])
-                    smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone, smn_del_ELBip_info)
-                    delete.del_elb(token, url_project, sub_project_id, elb['id'], elb['vip_address'])
+                    smn_del_ELBip_info = '%s 您好 您的经典型ELB IP：%s已飞灰湮灭。当前设置自动化蝶时间为按需IP创建后 %d小时' % (settings.iam['domainname'], elb_ip, settings.del_time['publicip'])
+                    del_elb_result = delete.del_elb(token, url_project, sub_project_id, elb['id'], elb['vip_address'])
+                    if del_elb_result:
+                        smn.smn(smn_token, smn_project, smn_project_id, settings.all_phone, smn_del_ELBip_info)
 
 # def manager_enhance_elb():
 #     enhance_elb_list = search_list.search_enhance_elb_list(token, url_project)
