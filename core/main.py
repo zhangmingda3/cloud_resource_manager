@@ -21,7 +21,7 @@ def manager_ecs(token,url_project,sub_project_id,smn_token, smn_project, smn_pro
             pass
         else:
             settings.userinfo[user_id] = {'phone': settings.all_phone, 'name': settings.iam['domainname']}
-        smn_shut_info = '%s 您好，您的主机：%s 被你累的Down了， 当前自动关机时间为创建后 %d小时 从现在开始%d小时后将自焚。有重要数据请尽快做镜像备份or需长期使用找管理员添加白名单' % (settings.userinfo[user_id]['name'], ecs_name, settings.off_time['ecs'],settings.del_time['ecs'] - settings.off_time['ecs'])
+        smn_shut_info = '%s 您好，您的主机：%s 被你累的Down了， 当前自动关机时间为创建后 %d小时 当前设置的自焚时间为创建后 %d小时。有重要数据请尽快做镜像备份or需长期使用请将主机名和>带宽名称加入 勿删 二字 然后再开机，将不会被关机和删除,否则您主机:%s 将于%s被删除' % (settings.userinfo[user_id]['name'], ecs_name, settings.off_time['ecs'],settings.del_time['ecs'],ecs_name,time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(DELETE_time)))
         smn_del_info = '%s 您好，您的主机：%s 正在自焚....当前设置的自焚时间为创建后 %d小时。' % (settings.userinfo[user_id]['name'], ecs_name, settings.del_time['ecs'])
 
         if ecs_id not in protected.ECS and time.time() > SHUTOFF_time and ecs_status != "SHUTOFF" and settings.nodel_ecs_name not in ecs_name:
@@ -41,7 +41,7 @@ def  manager_publicips(token, url_project, sub_project_id,smn_token, smn_project
     del_nat_rules_iplist = []
     del_elb_iplist = []
     for publicip in publicips:
-        if  not publicip['profile']['user_id'] and publicip['public_ip_address'] not in protected.EIP: # and publicip['bandwidth_share_type'] == 'PER'
+        if  not publicip['profile']['user_id'] and publicip['public_ip_address'] not in protected.EIP and settings.nodel_bandwidth_name not in publicip['bandwidth_name']: # and publicip['bandwidth_share_type'] == 'PER'
             '''not publicip['profile']['user_id']判断按需计费 PER为独享带宽'''
             create_stamp = time.mktime(time.strptime(publicip['create_time'], format("%Y-%m-%d %H:%M:%S"))) + 28800  # 将时间字符串转按指定格式换为元组<class 'time.struct_time'>
             DEL_time_stamp = create_stamp + settings.del_time['publicip'] * 3600

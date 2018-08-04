@@ -29,7 +29,8 @@ else:
     }
 
 #设置不被关机和删除的ECS名字。创建包含这样名字的主机将不会被管理关机和删除
-nodel_ecs_name = '爱你哟铭达'
+nodel_ecs_name = '勿删'
+nodel_bandwidth_name = '勿删'
 #账户下的不同地区的详细项目名称和项目ID
 Endpoint_project_id = {
     'cn-north-1':{'cn-north-1':'10a85dd37bac4e8abf6f6c349c7edfdd'},
