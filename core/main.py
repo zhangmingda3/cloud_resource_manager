@@ -41,7 +41,7 @@ def  manager_publicips(token, url_project, sub_project_id,smn_token, smn_project
     del_nat_rules_iplist = []
     del_elb_iplist = []
     for publicip in publicips:
-        if  not publicip['profile']['user_id'] and publicip['public_ip_address'] not in protected.EIP and settings.nodel_bandwidth_name not in publicip['bandwidth_name']: # and publicip['bandwidth_share_type'] == 'PER'
+        if  'profile' not in publicip.keys() and publicip['public_ip_address'] not in protected.EIP and settings.nodel_bandwidth_name not in publicip['bandwidth_name']: # and publicip['bandwidth_share_type'] == 'PER'
             '''not publicip['profile']['user_id']判断按需计费 PER为独享带宽'''
             create_stamp = time.mktime(time.strptime(publicip['create_time'], format("%Y-%m-%d %H:%M:%S"))) + 28800  # 将时间字符串转按指定格式换为元组<class 'time.struct_time'>
             DEL_time_stamp = create_stamp + settings.del_time['publicip'] * 3600
